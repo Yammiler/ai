@@ -21,10 +21,19 @@ def getComment(driver):
 
 def start_page(driver):
     driver.get('https://tiki.vn/deal-hot?tab=now&from_item=191808923')
+    driver.maximize_window()
     time.sleep(5)
 
-    deal_49k = driver.find_element(By.XPATH, '//div[@class="styles__TagName-sc-wpma16-3 eTEPIL"]')
-    deal_49k.click()
+
+    deals = driver.find_elements(By.XPATH, '//div[@class="styles__TagName-sc-wpma16-3 eTEPIL"]')
+
+    wait = WebDriverWait(driver, 10)
+    for x in deals:
+        if(x.text == "Dưới 49K"):
+            deal_49k = x
+            break
+
+    deal_49k.click();
     time.sleep(5)
 
 driver = webdriver.Chrome()
