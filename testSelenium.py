@@ -23,7 +23,7 @@ def start_page(driver):
     driver.get('https://tiki.vn/deal-hot?tab=now&from_item=191808923')
     time.sleep(5)
 
-    deal_49k = driver.find_element(By.XPATH, '//*[@id="__next"]/div[1]/main/div/div/div[3]/div/div/div/div/div[5]/div/div')
+    deal_49k = driver.find_element(By.XPATH, '//div[@class="styles__TagName-sc-wpma16-3 eTEPIL"]')
     deal_49k.click()
     time.sleep(5)
 
