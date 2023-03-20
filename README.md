@@ -2,6 +2,5 @@
 First time to use
 
 <h1> demo lấy dữ liệu bằng selenium</h1>
-<video width="320" height="240" controls>
-  <source src="https://github.com/paintOfUs/AI_HUS_2023_EEI/blob/main/space%20x%20-%200321%202023-03-19%2022-49-37.mp4" type="video/mp4">
-</video>
+https://user-images.githubusercontent.com/92799704/226242624-861f7052-9843-4a1e-add0-bfe7d50e5cd3.mp4
+
