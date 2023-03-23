@@ -1,5 +1,10 @@
 # AI_HUS_2023_EEI
 First time to use
+<picture>
+ <source media="(prefers-color-scheme: dark)" srcset="YOUR-DARKMODE-IMAGE">
+ <source media="(prefers-color-scheme: light)" srcset="YOUR-LIGHTMODE-IMAGE">
+ <img alt="YOUR-ALT-TEXT" src="YOUR-DEFAULT-IMAGE">
+</picture>
 
 <h1> demo lấy dữ liệu bằng selenium</h1>
 https://user-images.githubusercontent.com/92799704/226243896-b7ec4d18-8eaa-4099-81fa-f291f846b76c.mp4
