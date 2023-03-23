@@ -6,7 +6,7 @@ https://user-images.githubusercontent.com/92799704/226243896-b7ec4d18-8eaa-4099-
 
 <h2>Đoạn code lấy comment về</h2>
 ```python
-    # do dai cua trang
+   ```
     page_height = driver.execute_script("return document.body.scrollHeight")
     data = []
     # set the scroll step
@@ -41,4 +41,5 @@ https://user-images.githubusercontent.com/92799704/226243896-b7ec4d18-8eaa-4099-
         time.sleep(2)
     data_comment.append(data)
     return data_header,data_comment
+    ```
 ```
