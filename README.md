@@ -6,9 +6,6 @@ https://user-images.githubusercontent.com/92799704/226243896-b7ec4d18-8eaa-4099-
 
 <h2>Đoạn code lấy comment về</h2>
 ```python
-# craw data  
-def getComment(driver, data_header, data_comment):
-
     # do dai cua trang
     page_height = driver.execute_script("return document.body.scrollHeight")
     data = []
