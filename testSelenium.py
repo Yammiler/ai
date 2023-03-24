@@ -35,13 +35,14 @@ def getComment(driver,data_comment):
     comments = wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, '.review-comment')))
 
     for comment in comments:
+        data = []
         name = comment.find_element(By.XPATH, './/div[@class="review-comment__user-name"]')
         content = comment.find_element(By.XPATH, './/div[@class="review-comment__content"]')
-        data.append(content.text)
-        print(name.text + ': ' + content.text)
-        print()
-        time.sleep(2)
-    data_comment[brand] = data
+        if(content.text != ""):
+            data.append(content.text)
+            print(name.text + ': ' + content.text)
+            time.sleep(2)
+            data_comment.append(data)
     return data_comment
 
 def item_list(data_comment):
@@ -56,10 +57,10 @@ def item_list(data_comment):
         url = item.get_attribute("href")
         check_item = item.find_element(By.XPATH ,'//p[@class="text"]').text;
         time.sleep(0.5)
-        if(check_item!="Vừa mở bán"):
-            item_url.append(url)
-            count_item+=1
-            print(url + "\n\n")
+        #if(check_item!="Vừa mở bán"):
+        item_url.append(url)
+        count_item+=1
+        print(url + "\n\n")
 
     for i in range(len(item_url)):
         if(i!=1):
@@ -73,7 +74,7 @@ def item_list(data_comment):
 driver = webdriver.Chrome()
 
 # chay den link 
-driver.get('https://tiki.vn/deal-hot?tab=now&from_item=191808923')
+driver.get('https://tiki.vn/deal-hot?tab=now&from_item=55506687')
 # mo toan man hinh cua so
 driver.maximize_window()
 time.sleep(5)
@@ -94,13 +95,10 @@ for i in range(0, page_height, scroll_step):
     time.sleep(0.5)
 
 
-data_comment = {}
+data_comment = []
 data_comment = item_list(data_comment)
 
 createCSV.write_data(data_comment)
-
-time.sleep(5)
-
 
 time.sleep(20)
 # close the driver
