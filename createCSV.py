@@ -1,20 +1,9 @@
-import pandas as pd
-import numpy as np
-
+import csv
 
 def write_data(data):
-
-  df = pd.DataFrame(data, columns=get_key(data))
-  # muốn hiển thị ra chữ trong csv thì chính lại thành utf16 nhưng khuyên ko nên vì ko cần thiết và nó khiến sai định dạng lưu(Không phải lỗi)
-  df.to_csv("data.csv",encoding='utf8', index=False)
-  d = pd.read_csv('data.csv')
-  d.head()
-
-
-def get_key(data):
-  arr = []
-  for i in data:
-    arr.append(i)
-  
-  return arr
-    
+  data = [[s.strip().replace('\n','') for s in sub_list] for sub_list in data]
+  with open('data.csv','w', encoding="utf-8-sig",newline='') as file:
+   list_data = csv.writer(file,quoting=csv.QUOTE_MINIMAL )
+   for x in data:
+      row = [cell.replace('"','') for cell in x]
+      list_data.writerow(row)
