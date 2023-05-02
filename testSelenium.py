@@ -69,7 +69,7 @@ def item_list(data_comment):
 
     count_item = 0;
     for item in listofItems:
-        if count_item == 50:
+        if count_item == 30:
             break
         url = item.get_attribute("href")        
         time.sleep(2)
@@ -79,8 +79,9 @@ def item_list(data_comment):
         print(url + "\n\n")
 
     for i in range(len(item_url)):
-        driver.implicitly_wait(5) 
         driver.get(item_url[i])
+        time.sleep(8)
+        
         data_comment=getComment(driver ,data_comment)
         print(f"san pham {i+1}")
         print("===================================================")
@@ -88,10 +89,17 @@ def item_list(data_comment):
 
 
 # Chay chuong trinh
-driver = webdriver.Chrome()
+options = webdriver.ChromeOptions() 
+options.add_argument("start-maximized")
+options.add_experimental_option("excludeSwitches", ["enable-automation"])
+options.add_experimental_option('useAutomationExtension', False)
+driver = webdriver.Chrome(options=options)
+driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
+driver.execute_cdp_cmd('Network.setUserAgentOverride', {"userAgent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.53 Safari/537.36'})
+print(driver.execute_script("return navigator.userAgent;"))
 
 # chay den link 
-driver.get('https://tiki.vn/deal-hot?tab=now&from_item=55506687')
+driver.get('https://tiki.vn/deal-hot?tab=now&from_item=51520770')
 # mo toan man hinh cua so
 driver.maximize_window()
 time.sleep(5)
