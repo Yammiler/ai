@@ -8,57 +8,36 @@ import time
 
 
 # craw data  
-def getComment(driver,data_comment):
+def getComment(newdriver):
     
-    page_height = driver.execute_script("return document.body.scrollHeight")
+    page_height = newdriver.execute_script("return document.body.scrollHeight")
     
     scroll_step = 800
 
     # scroll down the page in steps
     for i in range(0, page_height, scroll_step):
         # scroll down to the next step
-        driver.execute_script(f"window.scrollTo(0, {i});")
+        newdriver.execute_script(f"window.scrollTo(0, {i});")
         # wait for the page to load
-        time.sleep(1.5)
-    
-    # lay ten thuong hieu + san pham
-    #brand = driver.find_element(By.XPATH, '//*[@id="__next"]/div[1]/main/div[3]/div[1]/div[3]/div[1]/div[1]/span/h6/a').text
-    #brand_title = driver.find_element(By.XPATH, '//*[@id="__next"]/div[1]/main/div[3]/div[1]/div[3]/div[1]/h1').text
-    #print("Thuong Hieu: "+" - "+brand_title)
+        time.sleep(0.5)
     print()
+    comments(newdriver)
 
-    #loc het cac trang binh luan
-    # for x in range(2,4,1):
-    #     time.sleep(6)
-    #     driver.implicitly_wait(20) 
-    #     comments(data_comment)
-    #     check = driver.find_element(By.XPATH, '/html/body/div[1]/div[1]/main/div[3]/div[4]/div/div[2]/div[8]/ul/li[7]/a')
-    #     if(check.size()!=0):
-    #         check.click()
-    data_comment = comments(data_comment)   
-    return data_comment
-
-def comments(data_comment):
-
-    
-    # lay ra cac comment ve san pham
-    time.sleep(10)
-    driver.implicitly_wait(10) 
-    wait1 = WebDriverWait(driver, 20)
+def comments(newdriver):
+    # lay ra cac comment ve san 
+    wait1 = WebDriverWait(newdriver, 10)
     try:
         comments = wait1.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, '.review-comment')))
-
+        #comments = driver.find_elements(By.XPATH,'/html/body/div[1]/div[1]/main/div[3]/div[4]/div/div[2]/div[3]')
         for comment in comments:
             data = []
             name = comment.find_element(By.XPATH, './/div[@class="review-comment__user-name"]')
             content = comment.find_element(By.XPATH, './/div[@class="review-comment__content"]')
             if(content.text != ""):
-                print(type(content.text))
                 data.append(content.text)
                 print(name.text + ': ' + content.text)
-                time.sleep(2)
-                data_comment.append(data)
-        return data_comment
+                time.sleep(2)       
+                data_comment.append(data)               
     except TimeoutException:
         driver.quit()
 
@@ -67,42 +46,52 @@ def item_list(data_comment):
     listofItems  = driver.find_elements(By.XPATH,'//div[@class="styles__Wrapper-sc-6jfdyd-0 iNsGak"]/a')
     item_url = []
 
-    count_item = 0;
+    count_item = 0
     for item in listofItems:
-        if count_item == 30:
+        if count_item == 3:
             break
         url = item.get_attribute("href")        
-        time.sleep(2)
         item_url.append(url)
         count_item+=1
         print(count_item)
         print(url + "\n\n")
+    
+    driver.quit()
 
     for i in range(len(item_url)):
-        driver.get(item_url[i])
-        time.sleep(8)
+        newdriver = open_driver()
+        newdriver.maximize_window()
+        newdriver.get(item_url[i])
+        print()
+        print(item_url[i])
+        print()
+        time.sleep(1)
         
-        data_comment=getComment(driver ,data_comment)
+        getComment(newdriver)
+        newdriver.quit()
+        
         print(f"san pham {i+1}")
         print("===================================================")
-    return data_comment
 
+def open_driver():
+    options = webdriver.ChromeOptions() 
+    options.add_argument("start-maximized")
+    options.add_experimental_option("excludeSwitches", ["enable-automation"])
+    options.add_experimental_option('useAutomationExtension', False)
+    driver = webdriver.Chrome(options=options)
+    driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
+    driver.execute_cdp_cmd('Network.setUserAgentOverride', {"userAgent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.53 Safari/537.36'})
+    print(driver.execute_script("return navigator.userAgent;"))
+    return driver
 
 # Chay chuong trinh
-options = webdriver.ChromeOptions() 
-options.add_argument("start-maximized")
-options.add_experimental_option("excludeSwitches", ["enable-automation"])
-options.add_experimental_option('useAutomationExtension', False)
-driver = webdriver.Chrome(options=options)
-driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
-driver.execute_cdp_cmd('Network.setUserAgentOverride', {"userAgent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.53 Safari/537.36'})
-print(driver.execute_script("return navigator.userAgent;"))
+driver = open_driver()
 
 # chay den link 
 driver.get('https://tiki.vn/deal-hot?tab=now&from_item=51520770')
 # mo toan man hinh cua so
 driver.maximize_window()
-time.sleep(5)
+time.sleep(3)
 
 
 deals = driver.find_elements(By.XPATH, '//div[@data-view-id="deal_flashdeal_tab"]')
@@ -110,10 +99,10 @@ deals = driver.find_elements(By.XPATH, '//div[@data-view-id="deal_flashdeal_tab"
 page_height = driver.execute_script("return document.body.scrollHeight")
 
 # set the scroll step
-scroll_step = 500
+scroll_step = 1000
 
 # scroll down the page in steps
-for i in range(0, page_height+1600, scroll_step):
+for i in range(0, page_height*12, scroll_step):
     # scroll down to the next step
     driver.execute_script(f"window.scrollTo(0, {i});")
     # wait for the page to load
@@ -121,10 +110,7 @@ for i in range(0, page_height+1600, scroll_step):
 
 
 data_comment = []
-data_comment = item_list(data_comment)
-
+item_list(data_comment)
+#data_log = [[s.strim().replace('\n','') for s in sub_list] for sub_list in data_comment]
 createCSV.write_data(data_comment)
 
-time.sleep(20)
-# close the driver
-driver.quit()
