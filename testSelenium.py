@@ -31,12 +31,15 @@ def comments(newdriver):
         #comments = driver.find_elements(By.XPATH,'/html/body/div[1]/div[1]/main/div[3]/div[4]/div/div[2]/div[3]')
         for comment in comments:
             data = []
+            text_data =[]
             name = comment.find_element(By.XPATH, './/div[@class="review-comment__user-name"]')
             content = comment.find_element(By.XPATH, './/div[@class="review-comment__content"]')
             if(content.text != ""):
                 data.append(content.text)
                 print(name.text + ': ' + content.text)
-                time.sleep(2)       
+                time.sleep(2)
+                text_data.append(data)
+                createCSV.add_data(text_data)      
                 data_comment.append(data)               
     except TimeoutException:
         driver.quit()
@@ -48,7 +51,7 @@ def item_list(data_comment):
 
     count_item = 0
     for item in listofItems:
-        if count_item == 3:
+        if count_item == 5:
             break
         url = item.get_attribute("href")        
         item_url.append(url)
@@ -112,5 +115,5 @@ for i in range(0, page_height*12, scroll_step):
 data_comment = []
 item_list(data_comment)
 #data_log = [[s.strim().replace('\n','') for s in sub_list] for sub_list in data_comment]
-createCSV.write_data(data_comment)
+#createCSV.write_data(data_comment)
 
